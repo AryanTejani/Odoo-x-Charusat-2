@@ -74,9 +74,6 @@ function App() {
     <div className="max-w-7xl mx-auto">
       {/* {!hideNavbar && <Navbar />} */}
       <Navbar />
-      {/* <FloatingShape color='bg-green-500' size='w-64 h-64' top='-5%' left='10%' delay={0} />
-			<FloatingShape color='bg-emerald-500' size='w-48 h-48' top='70%' left='80%' delay={5} />
-			<FloatingShape color='bg-lime-500' size='w-32 h-32' top='40%' left='-10%' delay={2} /> */}
 
       <Routes>
         <Route
@@ -125,18 +122,18 @@ function App() {
         <Route path="/workouts" element={<Workout />} />
         <Route path="/exercise/:id" element={<ExerciseDetails />} />
         <Route path="/goal-selection" element={<GoalSelectionPage />} />
-        <Route path="/recipe" element={<RecipeHome />} />
+        {/* <Route path="/recipe" element={<RecipeHome />} /> */}
         <Route path="/categories/:category" element={<Category />} />
         <Route path="/search" element={<SerachPage />} />
         <Route path="/items/:id" element={<SingleProduct />} />
         <Route path="/healthdata" element={<HealthInfo/>}/>
-        <Route
+        {/* <Route
           path="/detect"
           element={<ImageUpload onUploadSuccess={handleUploadSuccess} />}
-        />
+        /> */}
         <Route path="/history" element={<History />} />
         <Route path="/membership" element={<Membership />} />
-        <Route path="/ai" element={<Ai />} />
+        {/* <Route path="/ai" element={<Ai />} /> */}
         {/* catch all routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

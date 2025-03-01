@@ -8,14 +8,24 @@ const SerachExercies = ({ setExercises, bodyparts, setBodyParts }) => {
   const [bodypartSearch, setbodypartSearch] = useState([]);
   useEffect(() => {
     const fetchExercisedata = async () => {
-      const bodyParts = await fetchData(
-        "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
-        exerciseOptions
-      );
-      setbodypartSearch(["all", ...bodyParts]);
+      try {
+        const bodyParts = await fetchData(
+          "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
+          exerciseOptions
+        );
+        console.log("Fetched body parts:", bodyParts); // Debugging log
+        if (Array.isArray(bodyParts)) {
+          setbodypartSearch(["all", ...bodyParts]);
+        } else {
+          console.error("Unexpected response format:", bodyParts);
+        }
+      } catch (error) {
+        console.error("Error fetching body parts:", error);
+      }
     };
     fetchExercisedata();
   }, []);
+  
 
   const handleSearch = async () => {
     if (search) {
