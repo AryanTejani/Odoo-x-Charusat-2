@@ -1,0 +1,324 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 51916,
+      "max": [
+        45.39533615112305,
+        24.476415634155273,
+        159.67958068847656
+      ],
+      "min": [
+        -22.60624122619629,
+        -30.0322322845459,
+        -0.33933600783348083
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 622992,
+      "componentType": 5126,
+      "count": 51916,
+      "max": [
+        0.9999915361404419,
+        0.9999769926071167,
+        0.9999312162399292
+      ],
+      "min": [
+        -0.9999731779098511,
+        -0.9999682903289795,
+        -0.9999880790710449
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 51916,
+      "max": [
+        0.999815046787262,
+        0.9999216794967651,
+        0.9999884963035583,
+        1.0
+      ],
+      "min": [
+        -0.9998279213905334,
+        -0.9998503923416138,
+        -0.9999948143959045,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 51916,
+      "max": [
+        0.9979400038719177,
+        0.9980400204658508
+      ],
+      "min": [
+        0.0019499999471008778,
+        0.0019499999471008778
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 297561,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1245984,
+      "componentType": 5126,
+      "count": 533,
+      "max": [
+        -0.8453310132026672,
+        1.2051470279693604,
+        150.36341857910156
+      ],
+      "min": [
+        -10.301763534545898,
+        -2.568150043487549,
+        146.05889892578125
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1252380,
+      "componentType": 5126,
+      "count": 533,
+      "max": [
+        0.9999216794967651,
+        0.9932016730308533,
+        0.9990196824073792
+      ],
+      "min": [
+        -0.9969407916069031,
+        -0.9981318712234497,
+        -0.9958766102790833
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 830656,
+      "componentType": 5126,
+      "count": 533,
+      "max": [
+        0.9996763467788696,
+        0.9985212683677673,
+        0.9531024098396301,
+        1.0
+      ],
+      "min": [
+        -0.9645670056343079,
+        -0.999652624130249,
+        -0.5909345149993896,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 415328,
+      "componentType": 5126,
+      "count": 533,
+      "max": [
+        0.5547299981117249,
+        0.5722399950027466
+      ],
+      "min": [
+        0.3840999901294708,
+        0.5395399928092957
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 1190244,
+      "componentType": 5125,
+      "count": 2868,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "3DPeopleOfficial (https://sketchfab.com/3DPeopleOfficial)",
+      "license": "CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)",
+      "source": "https://sketchfab.com/3d-models/juliette-10781-free-sport-girl-a845ee56f0344625bff4833c447b94df",
+      "title": "Juliette 10781 - Free Sport Girl"
+    },
+    "generator": "Sketchfab-12.66.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 1201716,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 419592,
+      "byteOffset": 1201716,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1258776,
+      "byteOffset": 1621308,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 839184,
+      "byteOffset": 2880084,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 3719268,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/defaultMat_baseColor.jpeg"
+    },
+    {
+      "uri": "textures/defaultMat_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "defaultMat",
+      "normalTexture": {
+        "index": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.7151295731707317
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 6,
+            "POSITION": 5,
+            "TANGENT": 7,
+            "TEXCOORD_0": 8
+          },
+          "indices": 9,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.011334515176713467,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.516767944430113e-18,
+        -0.011334515176713467,
+        0.0,
+        0.0,
+        0.011334515176713467,
+        2.516767944430113e-18,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2,
+        3
+      ],
+      "name": "10781_w_Juliette_100k.obj.cleaner.materialmerger.gles"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_2"
+    },
+    {
+      "mesh": 1,
+      "name": "Object_3"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    }
+  ]
+}
