@@ -78,6 +78,26 @@ const ItemSchema = new Schema({
     type: [moreSchema],
     required: true,
   },
+  calories: {
+    type: Number,
+    required: true,
+  },
+  carbs: {
+    type: Number,
+    required: true,
+  },
+  protein: {
+    type: Number,
+    required: true,
+  },
+  fat: {
+    type: Number,
+    required: true,
+  },
+  youtube_link: {
+    type: String,
+    required: true,
+  },
 });
 
 export const Item = mongoose.model('Item',ItemSchema)
