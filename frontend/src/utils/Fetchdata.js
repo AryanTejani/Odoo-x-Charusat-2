@@ -3,7 +3,7 @@ import axios from "axios";
 export const exerciseOptions = {
   method: "GET",
   headers: {
-    "x-rapidapi-key": "11c3c32bcamsh33ee80e98eb241ep1ab6c4jsn0b16cd2139c4", // For Vite
+    "x-rapidapi-key": import.meta.env.VITE_RAPID_API_KEY, // For Vite
     "x-rapidapi-host": "exercisedb.p.rapidapi.com",
   },
 };
@@ -12,7 +12,7 @@ export const youtubeOptions = {
   method: 'GET',
   headers: {
     'X-RapidAPI-Host': 'youtube-search-and-download.p.rapidapi.com',
-    'X-RapidAPI-Key': '11c3c32bcamsh33ee80e98eb241ep1ab6c4jsn0b16cd2139c4',
+    'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
   },
 };
 

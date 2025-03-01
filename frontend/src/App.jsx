@@ -122,7 +122,7 @@ function App() {
         <Route path="/workouts" element={<Workout />} />
         <Route path="/exercise/:id" element={<ExerciseDetails />} />
         <Route path="/goal-selection" element={<GoalSelectionPage />} />
-        {/* <Route path="/recipe" element={<RecipeHome />} /> */}
+        <Route path="/recipe" element={<RecipeHome />} />
         <Route path="/categories/:category" element={<Category />} />
         <Route path="/search" element={<SerachPage />} />
         <Route path="/items/:id" element={<SingleProduct />} />
@@ -133,7 +133,7 @@ function App() {
         /> */}
         <Route path="/history" element={<History />} />
         <Route path="/membership" element={<Membership />} />
-        {/* <Route path="/ai" element={<Ai />} /> */}
+        <Route path="/ai" element={<Ai />} />
         {/* catch all routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
