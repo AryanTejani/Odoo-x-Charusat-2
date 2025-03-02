@@ -36,6 +36,39 @@ const EMERGENCY_KEYWORDS = [
   "slurred speech",
   "confusion",
   "disorientation",
+  // Exercise emergencies
+  "rhabdomyolysis",
+  "extreme muscle pain",
+  "dark urine after workout",
+  "exercise-induced collapse",
+  "heat stroke",
+  "heat exhaustion",
+  "sudden joint pain",
+  "popping sound in joint",
+  "exercise-induced asthma attack",
+  "exercise-induced anaphylaxis",
+  // Nutrition emergencies
+  "severe dehydration",
+  "electrolyte imbalance",
+  "dangerously low blood sugar",
+  "hypoglycemic episode",
+  "severe allergic food reaction",
+  // Fat loss concerns
+  "extreme weight loss",
+  "fainting during diet",
+  "severe malnutrition",
+  "dangerous caloric restriction",
+  // Athlete training emergencies
+  "concussion symptoms",
+  "head injury during training",
+  "persistent dizziness",
+  "irregular heartbeat during exercise",
+  "chest pressure during workout",
+  "sudden drop in performance",
+  "severe tendon pain",
+  "acute injury",
+  "stress fracture symptoms",
+  "exertional compartment syndrome"
 ];
 
 const responseCache = new Map();
