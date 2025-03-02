@@ -1,0 +1,28 @@
+/* Optional: Add these styles to your global CSS if you want additional customization */
+.exercise-card {
+    transform-origin: center bottom;
+    backface-visibility: hidden;
+  }
+  
+  .exercise-card:hover img {
+    transform: scale(1.05);
+  }
+  
+  /* Add a subtle pulse animation to the tags on hover */
+  .exercise-card:hover span {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba(236, 72, 153, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);
+    }
+  }
+  
+  

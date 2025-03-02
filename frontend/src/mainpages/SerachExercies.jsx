@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { exerciseOptions, fetchData } from "../utils/Fetchdata";
 import HorizontalScrollbar from "../section/HorizontalScrollbar";
 
-const SerachExercies = ({ setExercises, bodyparts, setBodyParts }) => {
+const SearchExercises = ({ setExercises, bodyparts, setBodyParts }) => {
   const [search, setSearch] = useState("");
   const [bodypartSearch, setbodypartSearch] = useState([]);
+
   useEffect(() => {
     const fetchExercisedata = async () => {
       try {
@@ -25,7 +25,6 @@ const SerachExercies = ({ setExercises, bodyparts, setBodyParts }) => {
     };
     fetchExercisedata();
   }, []);
-  
 
   const handleSearch = async () => {
     if (search) {
@@ -33,71 +32,49 @@ const SerachExercies = ({ setExercises, bodyparts, setBodyParts }) => {
         "https://exercisedb.p.rapidapi.com/exercises",
         exerciseOptions
       );
-        const SerachExercies = exerciseData.filter(
-          (exercise) =>
-            exercise.name.toLowerCase().includes(search) ||
-            exercise.target.toLowerCase().includes(search) ||
-            exercise.equipment.toLowerCase().includes(search) ||
-            exercise.bodyPart.toLowerCase().includes(search)
-        );
+      const searchedExercises = exerciseData.filter(
+        (exercise) =>
+          exercise.name.toLowerCase().includes(search) ||
+          exercise.target.toLowerCase().includes(search) ||
+          exercise.equipment.toLowerCase().includes(search) ||
+          exercise.bodyPart.toLowerCase().includes(search)
+      );
       setSearch("");
-      setExercises(SerachExercies);
+      setExercises(searchedExercises);
       console.log(exerciseData);
     }
   };
+
   return (
-    <Stack alignItems="center" mt="37px" justifyContent="center" p="20px">
-      <Typography
-        fontWeight={700}
-        sx={{ fontSize: { lg: "44px", xs: "30px" } }}
-        mb="49px"
-        textAlign="center"
-      >
+    <div className="flex flex-col items-center mt-20 p-5 bg-black text-white">
+      <h1 className="font-bold text-4xl lg:text-5xl text-center mb-12">
         Awesome Exercises You <br /> Should Know
-      </Typography>
-      <Box position="relative" mb="72px">
-        <TextField
-          height="76px"
-          sx={{
-            input: { fontWeight: "700", border: "none", borderRadius: "4px" },
-            width: { lg: "1170px", xs: "350px" },
-            backgroundColor: "#fff",
-            borderRadius: "40px",
-          }}
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value.toLowerCase());
-          }}
-          placeholder="Search Exercises"
+      </h1>
+      <div className="relative mb-24 w-full max-w-4xl">
+        <input
           type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value.toLowerCase())}
+          placeholder="Search Exercises"
+          className="w-full p-4 pl-6 pr-24 font-bold text-black rounded-full focus:outline-none focus:ring-2 focus:ring-red-500"
         />
-        <Button
-          className="search-btn"
-          sx={{
-            bgcolor: "#FF2625",
-            color: "#fff",
-            textTransform: "none",
-            width: { lg: "173px", xs: "80px" },
-            height: "56px",
-            position: "absolute",
-            right: "0px",
-            fontSize: { lg: "20px", xs: "14px" },
-          }}
+        <button
           onClick={handleSearch}
+          className="absolute right-0 top-0 bg-red-600 text-white font-bold py-4 px-8 rounded-full hover:bg-red-700 transition-colors"
         >
           Search
-        </Button>
-      </Box>
-      <Box sx={{ position: "relative", width: "100%", p: "20px" }}>
+        </button>
+      </div>
+      <div className="w-full p-5">
         <HorizontalScrollbar
           data={bodypartSearch}
           bodypartSearch
           setBodyPart={setBodyParts}
           bodyPart={bodyparts}
         />
-      </Box>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
-export default SerachExercies;
+export default SearchExercises;

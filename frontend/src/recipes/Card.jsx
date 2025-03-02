@@ -21,43 +21,46 @@ const Card = ({ item }) => {
   const categoryStyle = getCategoryStyle(item?.category);
 
   return (
-    <div className="container flex justify-center md:justify-start">
-      <div className="max-w-sm">
-        <div className="bg-white relative shadow-lg hover:shadow-xl transition duration-500 rounded-lg">
-          <img className="rounded-t-lg" src={item?.thumbnail_image} alt="" />
-          <div className="py-6 px-5 rounded-lg bg-white">
-            <Link to={`/items/${item._id}`}>
-            <h1 className="text-gray-700 font-bold text-2xl mb-8 hover:text-gray-900 hover:cursor-pointer">
+    <div className="w-full px-2 mb-6">
+      <div className="h-full bg-white relative shadow-lg hover:shadow-xl transition duration-500 rounded-lg flex flex-col">
+        <div className="h-56 overflow-hidden rounded-t-lg">
+          <img 
+            className="w-full h-full object-cover" 
+            src={item?.thumbnail_image} 
+            alt={item?.name || "Recipe"} 
+          />
+        </div>
+        <div className="p-5 rounded-lg bg-white flex-grow flex flex-col justify-between">
+          <Link to={`/items/${item._id}`} className="block">
+            <h1 className="text-gray-700 font-bold text-xl mb-3 hover:text-gray-900 hover:cursor-pointer line-clamp-2">
               {item?.name}
             </h1>
-            </Link>
-            
-
-            {/* category & reading time */}
-            <div className="flex justify-between items-center flex-wrap">
-              <button
-                className="mt-6 py-2 px-4 font-medium rounded-lg shadow-md hover:shadow-lg transition duration-300"
-                style={{
-                  backgroundColor: categoryStyle.backgroundColor,
-                  color: categoryStyle.color,
-                }}
-              >
-                {item?.category}
-              </button>
-              <div className="flex items-center py-2 mt-6">
-                <img
-                  src={ClockImg}
-                  loading="lazy"
-                  alt=""
-                  className="recipe-icon small"
-                />
-                <div className="ml-1">30 minutes</div>
-              </div>
+          </Link>
+          
+          {/* category & reading time */}
+          <div className="flex justify-between items-center mt-auto">
+            <button
+              className="py-1 px-3 text-sm font-medium rounded-lg shadow-md hover:shadow-lg transition duration-300"
+              style={{
+                backgroundColor: categoryStyle.backgroundColor,
+                color: categoryStyle.color,
+              }}
+            >
+              {item?.category}
+            </button>
+            <div className="flex items-center py-1">
+              <img
+                src={ClockImg}
+                loading="lazy"
+                alt=""
+                className="w-4 h-4"
+              />
+              <div className="ml-1 text-sm">30 minutes</div>
             </div>
           </div>
-          <div className="absolute top-2 right-2 py-2 px-4 bg-white rounded-lg">
-            <span className="text-md">{item?.more?.difficulty}</span>
-          </div>
+        </div>
+        <div className="absolute top-2 right-2 py-1 px-3 bg-white rounded-lg">
+          <span className="text-sm">{item?.more?.difficulty}</span>
         </div>
       </div>
     </div>

@@ -127,12 +127,12 @@ function App() {
         <Route path="/search" element={<SerachPage />} />
         <Route path="/items/:id" element={<SingleProduct />} />
         <Route path="/healthdata" element={<HealthInfo/>}/>
-        {/* <Route
+        <Route
           path="/detect"
           element={<ImageUpload onUploadSuccess={handleUploadSuccess} />}
-        /> */}
+        />
         <Route path="/history" element={<History />} />
-        <Route path="/membership" element={<Membership />} />
+        {/* <Route path="/membership" element={<Membership />} /> */}
         <Route path="/ai" element={<Ai />} />
         {/* catch all routes */}
         <Route path="*" element={<Navigate to="/" replace />} />

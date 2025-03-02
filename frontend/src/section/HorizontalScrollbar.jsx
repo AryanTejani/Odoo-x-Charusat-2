@@ -90,7 +90,6 @@ const HorizontalScrollbar = ({
         </div>
       )}
       {/* Scrollable Content */}
-      // For the scrollbar container in HorizontalScrollbar.jsx
       <div
         ref={scrollContainerRef}
         className="flex overflow-x-auto py-3 px-16 gap-10 font-sans"

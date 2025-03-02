@@ -289,8 +289,8 @@ body {
 }
 
 .search-btn:hover {
-  color: #FF2625 !important;
-  border: 1px solid #FF2625 !important;
+  color: cyan !important;
+  border: 1px solid cyan !important;
 }
 
 .exercise-video {

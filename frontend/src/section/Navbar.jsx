@@ -122,9 +122,9 @@ const Navbar = () => {
             </>
           )}
           {/* Membership is always visible */}
-          <Link to="/membership" className="text-blue-600 font-bold hover:text-blue-800 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200 py-1">
+          {/* <Link to="/membership" className="text-blue-600 font-bold hover:text-blue-800 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200 py-1">
             Membership
-          </Link>
+          </Link> */}
         </nav>
 
         {/* Auth Buttons */}
@@ -257,13 +257,13 @@ const Navbar = () => {
               )}
               
               {/* Membership is always visible */}
-              <Link
+              {/* <Link
                 to="/membership"
                 onClick={() => setMenuOpen(false)}
                 className="text-blue-600 font-bold hover:text-blue-800 py-2 px-3 rounded-lg hover:bg-blue-50 transition-all duration-200"
               >
                 Membership
-              </Link>
+              </Link> */}
 
               <div className="border-t border-gray-200 my-2"></div>
 

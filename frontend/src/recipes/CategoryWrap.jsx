@@ -20,38 +20,38 @@ function CategoryList() {
   return (
     <div className="flex flex-wrap items-center justify-center gap-8">
       <Categoryitem
-        name="entrees"
-        href="/categories/entrees"
+        name="Appetizer"
+        href="/categories/appetizer"
         backgroundColor="#f0f5c4"
         color="#59871f"
       />
       <Categoryitem
-        name="brekfast"
-        href="/categories/breakfast"
+        name="Main Course"
+        href="/categories/maincourse"
         backgroundColor="#efedfa"
         color="#3c3a8f"
       />
       <Categoryitem
-        name="lunch"
-        href="/categories/lunch"
+        name="Breakfast"
+        href="/categories/breakfast"
         backgroundColor="#e5f7f3"
         color="#1f8787"
       />
       <Categoryitem
-        name="desserts"
-        href="/categories/desserts"
+        name="Salad"
+        href="/categories/salad"
         backgroundColor="#e8f5fa"
         color="#397a9e"
       />
       <Categoryitem
-        name="sides"
-        href="/categories/sides"
+        name="Drink"
+        href="/categories/drink"
         backgroundColor="#feefc9"
         color="#d16400"
       />
       <Categoryitem
-        name="drinks"
-        href="/categories/drinks"
+        name="Snack"
+        href="/categories/snack"
         backgroundColor="#ffeae3"
         color="#f0493e"
       />
