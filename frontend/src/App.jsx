@@ -14,8 +14,7 @@ import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
-import Exercises from "./section/Exercises";
-import ExerciseDetails from "./mainpages/ExerciseDetails";
+import ExerciseDetails from "./workout/ExerciseDetails";
 import GoalSelectionPage from "./section/Goalselection";
 import RecipeHome from "./recipes/RecipeHome";
 import Category from "./recipes/Category";
@@ -26,6 +25,14 @@ import ImageUpload from "./chakratracker/ChakraTracker";
 import Membership from "./section/Membership";
 import Ai from "./section/Ai";
 import HealthInfo from "./mainpages/HealthInfo";
+import Dashboard from "./exerciseTrack/Dashboard";
+// In your App.js or index.js
+import { setupAuthInterceptor } from './utils/fetchWorkout';
+import Workouts from "./exerciseTrack/Workouts";
+import {  setupAxiosInterceptors } from "./utils/setupInterceptors";
+
+// Setup the interceptor with a function that gets the token
+
 // import FatLossPage from "./ExerciseAfterLogin/Fatloss";
 
 // protect routes that require authentication
@@ -62,6 +69,11 @@ function App() {
   const handleUploadSuccess = (newEntry) => {
     setHistory([newEntry, ...history]);
   };
+
+  useEffect(() => {
+    setupAxiosInterceptors();
+    console.log('Axios interceptors setup complete');
+  }, []);
 
   const { isCheckingAuth, checkAuth } = useAuthStore();
   useEffect(() => {
@@ -134,6 +146,8 @@ function App() {
         <Route path="/history" element={<History />} />
         {/* <Route path="/membership" element={<Membership />} /> */}
         <Route path="/ai" element={<Ai />} />
+        <Route path="/exerciseDashboard" element={<Dashboard />} />
+        <Route path="/exerciseWorkouts" element={<Workouts />} />
         {/* catch all routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

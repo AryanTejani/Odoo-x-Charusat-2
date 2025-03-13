@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Loader2, AlertTriangle, Info, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import { Send, Bot, User, Loader2, AlertTriangle, Info, Mic, MicOff, Volume2, VolumeX, 
+         History, X, Search, Calendar, Clock, ChevronLeft, Settings, Moon, Sun, Trash2, 
+         Download } from "lucide-react";
 
 const EMERGENCY_KEYWORDS = [
   "chest pain",
@@ -111,18 +113,24 @@ const VOICE_LANGUAGES = {
 const Ai = () => {
   const API_KEY = "AIzaSyCiO0Ep9g6YCDcdks_Xar-xm_4VNemkTyM";
 
-  // In your state initialization
+  // State initialization
   const [messages, setMessages] = useState([
     {
       text: "👋 Welcome to CaloriSensei! I'm your fitness and nutrition assistant. Ask me about:\n\n💪 Exercises\n🍽️ Fat loss diets\n🏋️ Athlete training\n📝 Recipes from any cuisine\n\nHow can I help you today?",
       sender: "ai",
+      timestamp: Date.now()
     },
   ]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [fullHistory, setFullHistory] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState(null);
   const [language, setLanguage] = useState("en");
   const messagesEndRef = useRef(null);
+  const [activeConversation, setActiveConversation] = useState(null);
+  const [darkMode, setDarkMode] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
   
   // Voice assistant states
   const [isListening, setIsListening] = useState(false);
@@ -130,6 +138,66 @@ const Ai = () => {
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const recognitionRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
+
+  // Enhanced history function to store complete conversations
+  const addToHistory = (newMessage) => {
+    // Create a conversation object if it's a user message
+    if (newMessage.sender === "user") {
+      const conversationId = Date.now();
+      const conversationObj = {
+        id: conversationId,
+        text: newMessage.text,
+        timestamp: Date.now(),
+        messages: [
+          ...messages.slice(-3), // Include recent context
+          newMessage
+        ]
+      };
+      
+      // Update history with new conversation
+      const updatedHistory = [...fullHistory, conversationObj];
+      // Limit history to last 50 conversations
+      const limitedHistory = updatedHistory.slice(-50);
+      setFullHistory(limitedHistory);
+      
+      // Store conversation ID for later association with AI response
+      setActiveConversation(conversationId);
+      
+      // Persist to localStorage
+      localStorage.setItem('caloriSenseiHistory', JSON.stringify(limitedHistory));
+    } 
+    // If it's an AI response and we have an active conversation
+    else if (newMessage.sender === "ai" && activeConversation) {
+      // Find the conversation and update it with the AI response
+      const updatedHistory = fullHistory.map(conv => {
+        if (conv.id === activeConversation) {
+          return {
+            ...conv,
+            messages: [...conv.messages, newMessage]
+          };
+        }
+        return conv;
+      });
+      
+      setFullHistory(updatedHistory);
+      localStorage.setItem('caloriSenseiHistory', JSON.stringify(updatedHistory));
+      
+      // Reset active conversation
+      setActiveConversation(null);
+    }
+  };
+
+  // Load history from localStorage on component mount
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('caloriSenseiHistory');
+    if (savedHistory) {
+      try {
+        setFullHistory(JSON.parse(savedHistory));
+      } catch (error) {
+        console.error('Error parsing history:', error);
+      }
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -227,6 +295,13 @@ const Ai = () => {
     }
   };
 
+  // Toggle theme
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+    // Apply theme to body
+    document.body.classList.toggle('light-theme', !darkMode);
+  };
+
   // Speak text using appropriate voice for the language
   const speakText = (text) => {
     if (!voiceEnabled) return;
@@ -260,6 +335,42 @@ const Ai = () => {
       utterance.onerror = () => setIsSpeaking(false);
       
       synthRef.current.speak(utterance);
+    }
+  };
+
+  // Export chat history function
+  const exportChatHistory = () => {
+    try {
+      // Format the history for export
+      const historyForExport = fullHistory.map(conv => {
+        const date = new Date(conv.timestamp).toLocaleDateString();
+        const time = new Date(conv.timestamp).toLocaleTimeString();
+        
+        let formattedMessages = '';
+        if (conv.messages && conv.messages.length) {
+          formattedMessages = conv.messages.map(msg => 
+            `${msg.sender === 'user' ? 'You' : 'CaloriSensei'}: ${msg.text}`
+          ).join('\n\n');
+        } else {
+          formattedMessages = `You: ${conv.text}`;
+        }
+        
+        return `--- Conversation from ${date} at ${time} ---\n\n${formattedMessages}\n\n`;
+      }).join('\n');
+      
+      // Create a downloadable file
+      const blob = new Blob([historyForExport], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `calorisensei-history-${new Date().toISOString().slice(0, 10)}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting history:', error);
+      setError('Failed to export history. Please try again.');
     }
   };
 
@@ -470,21 +581,64 @@ const Ai = () => {
     }
   };
 
+  // Select a conversation from history
+  const handleSelectConversation = (conversation) => {
+    // Load the conversation messages
+    if (conversation.messages && conversation.messages.length) {
+      setMessages(conversation.messages);
+    } else {
+      // Fallback if old format without nested messages
+      setMessages([
+        {
+          text: "👋 Previous conversation",
+          sender: "ai",
+          timestamp: conversation.timestamp
+        },
+        {
+          text: conversation.text,
+          sender: "user",
+          timestamp: conversation.timestamp
+        }
+      ]);
+    }
+    
+    // Close history panel
+    setShowHistory(false);
+  };
+
   const handleSendMessage = async (voiceInput = null) => {
     const cleanInput = sanitizeInput(voiceInput || input);
     if (!cleanInput) return;
 
-    const userMessage = { text: cleanInput, sender: "user" };
+    const userMessage = { 
+      text: cleanInput, 
+      sender: "user",
+      timestamp: Date.now()
+    };
+    
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
     setError(null);
+    
+    // Add to history
+    addToHistory(userMessage);
 
     try {
       const response = await retryWithExponentialBackoff(() =>
         getAIResponse(cleanInput)
       );
-      setMessages((prev) => [...prev, { text: response, sender: "ai" }]);
+      
+      const aiMessage = { 
+        text: response, 
+        sender: "ai",
+        timestamp: Date.now()
+      };
+      
+      setMessages((prev) => [...prev, aiMessage]);
+      
+      // Add AI response to history
+      addToHistory(aiMessage);
       
       // Speak the response if voice is enabled
       if (voiceEnabled && !isSpeaking) {
@@ -493,14 +647,18 @@ const Ai = () => {
     } catch (error) {
       console.error("Final error after retries:", error);
       const errorMsg = "Medical analysis unavailable. Please contact a healthcare provider.";
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: errorMsg,
-          sender: "ai",
-        },
-      ]);
+      
+      const errorMessage = {
+        text: errorMsg,
+        sender: "ai",
+        timestamp: Date.now()
+      };
+      
+      setMessages((prev) => [...prev, errorMessage]);
       setError("Service temporarily unavailable. Please try again later.");
+      
+      // Add error message to history
+      addToHistory(errorMessage);
       
       // Speak error message if voice is enabled
       if (voiceEnabled) {
@@ -510,7 +668,6 @@ const Ai = () => {
       setIsTyping(false);
     }
   };
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -530,6 +687,7 @@ const Ai = () => {
       {
         text: welcomeMsg,
         sender: "ai",
+        timestamp: Date.now()
       },
     ]);
     setError(null);
@@ -574,8 +732,169 @@ const Ai = () => {
     }
   }, []);
 
+  // History Panel Component
+  const HistoryPanel = ({ history, onSelectConversation, onClose }) => {
+    const [searchTerm, setSearchTerm] = useState("");
+    
+    // Filter history based on search term
+    const filteredHistory = history.filter(msg => 
+      msg.text?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    // Group conversations by date
+    const groupedHistory = filteredHistory.reduce((groups, message) => {
+      const date = new Date(message.timestamp || Date.now()).toLocaleDateString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(message);
+      return groups;
+    }, {});
+    
+    return (
+      <div className="absolute top-0 left-0 w-80 h-full bg-gray-900 border-r border-gray-800 z-10 shadow-lg overflow-y-auto">
+        <div className="p-4 border-b border-gray-800">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-white">Conversation History</h2>
+            <div className="flex gap-2">
+              <button 
+                onClick={exportChatHistory}
+                className="text-gray-400 hover:text-white"
+                title="Export history"
+              >
+                <Download className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={onClose}
+                className="text-gray-400 hover:text-white"
+                title="Close history"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search history..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-2 pl-8 rounded bg-gray-800 text-white border border-gray-700"
+            />
+            <Search className="w-4 h-4 text-gray-400 absolute left-2 top-1/2 transform -translate-y-1/2" />
+            {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm("")}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+        
+        <div className="p-2">
+          {Object.keys(groupedHistory).length > 0 ? (
+            Object.entries(groupedHistory).map(([date, messages]) => (
+              <div key={date} className="mb-4">
+                <h3 className="text-xs text-gray-400 px-2 py-1">{date}</h3>
+                {messages.map((message, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onSelectConversation(message)}
+                    className="w-full text-left p-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white transition-colors mb-1 text-sm truncate"
+                  >
+                    {message.text.substring(0, 60)}...
+                  </button>
+                ))}
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center h-40 text-gray-400">
+              <History className="w-8 h-8 mb-2 opacity-50" />
+              <p className="text-sm">No conversations found</p>
+              {searchTerm && <p className="text-xs mt-1">Try a different search term</p>}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Settings Panel Component
+  const SettingsPanel = () => (
+    <div className="absolute top-0 right-0 w-80 h-full bg-gray-900 border-l border-gray-800 z-10 shadow-lg">
+      <div className="p-4 border-b border-gray-800">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-semibold text-white">Settings</h2>
+          <button 
+            onClick={() => setShowSettings(false)}
+            className="text-gray-400 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+      
+      <div className="p-4">
+        <div className="flex justify-between items-center py-2 border-b border-gray-800">
+          <div className="flex items-center gap-2">
+            <Moon className="w-4 h-4 text-gray-400" />
+            <span className="text-white">Dark Mode</span>
+          </div>
+          <button 
+            onClick={toggleTheme}
+            className={`w-12 h-6 rounded-full ${darkMode ? 'bg-blue-600' : 'bg-gray-700'} relative`}
+          >
+            <span 
+              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                darkMode ? 'left-7' : 'left-1'
+              }`} 
+            />
+          </button>
+        </div>
+        
+        <div className="flex justify-between items-center py-2 border-b border-gray-800">
+          <div className="flex items-center gap-2">
+            <Volume2 className="w-4 h-4 text-gray-400" />
+            <span className="text-white">Voice Output</span>
+          </div>
+          <button 
+            onClick={toggleVoiceOutput}
+            className={`w-12 h-6 rounded-full ${voiceEnabled ? 'bg-blue-600' : 'bg-gray-700'} relative`}
+          >
+            <span 
+              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                voiceEnabled ? 'left-7' : 'left-1'
+              }`} 
+            />
+          </button>
+        </div>
+        
+        <div className="mt-4">
+          <button
+            onClick={() => {
+              localStorage.removeItem('caloriSenseiHistory');
+              setFullHistory([]);
+              setShowSettings(false);
+            }}
+            className="w-full py-2 px-4 bg-red-600 hover:bg-red-500 text-white rounded flex items-center justify-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            <span>Clear All History</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Message Bubble Component
   const MessageBubble = ({ message }) => {
     const isAI = message.sender === "ai";
+    const timestamp = message.timestamp ? new Date(message.timestamp) : new Date();
+    const formattedTime = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
     return (
       <div
         className={`flex items-start gap-3 mb-4 ${
@@ -595,16 +914,23 @@ const Ai = () => {
           <pre className="whitespace-pre-wrap font-sans text-sm">
             {message.text}
           </pre>
-          {isAI && voiceEnabled && (
-            <button 
-              onClick={() => speakText(message.text)}
-              className="mt-2 text-xs text-gray-400 hover:text-white flex items-center gap-1"
-              disabled={isSpeaking}
-            >
-              <Volume2 className="w-3 h-3" />
-              <span>Listen</span>
-            </button>
-          )}
+          <div className="flex items-center justify-between mt-2 text-xs text-gray-400">
+            <span className="flex items-center gap-1">
+              <Clock className="w-3 h-3" />
+              {formattedTime}
+            </span>
+            
+            {isAI && voiceEnabled && (
+              <button 
+                onClick={() => speakText(message.text)}
+                className="text-xs text-gray-400 hover:text-white flex items-center gap-1"
+                disabled={isSpeaking}
+              >
+                <Volume2 className="w-3 h-3" />
+                <span>Listen</span>
+              </button>
+            )}
+          </div>
         </div>
         {!isAI && (
           <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
@@ -629,7 +955,7 @@ const Ai = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-2 mt-20">
+    <div className={`w-full max-w-4xl mx-auto p-2 mt-20 ${darkMode ? 'dark-theme' : 'light-theme'}`}>
       <div className="bg-gray-900 rounded-2xl shadow-md border border-gray-800 relative">
         <header className="p-4 border-b border-gray-800">
           <h1 className="text-2xl font-semibold text-white flex items-center gap-2">
@@ -643,6 +969,19 @@ const Ai = () => {
                 className="text-xs text-gray-400 hover:text-gray-200 flex items-center gap-1 py-1 px-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors cursor-pointer"
               >
                 <span>Clear conversation</span>
+              </button>
+              
+              <button
+                onClick={() => setShowHistory(!showHistory)}
+                className={`text-xs flex items-center gap-1 py-1 px-2 rounded-full transition-colors cursor-pointer ${
+                  showHistory 
+                    ? "text-blue-400 hover:text-blue-300 bg-blue-900/30 hover:bg-blue-800/30" 
+                    : "text-gray-400 hover:text-gray-300 bg-gray-800 hover:bg-gray-700"
+                }`}
+                title="View conversation history"
+              >
+                <History className="w-3 h-3" />
+                <span>History</span>
               </button>
               
               <button
@@ -661,6 +1000,15 @@ const Ai = () => {
             
             <div className="flex items-center gap-2">
               <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="text-xs flex items-center gap-1 py-1 px-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors cursor-pointer text-gray-400 hover:text-gray-200"
+                title="Settings"
+              >
+                <Settings className="w-3 h-3" />
+                <span>Settings</span>
+              </button>
+              
+              <button
                 onClick={toggleListening}
                 className={`text-xs flex items-center gap-1 py-1 px-2 rounded-full transition-colors cursor-pointer ${
                   isListening
@@ -675,6 +1023,16 @@ const Ai = () => {
             </div>
           </div>
         </header>
+
+        {showHistory && (
+          <HistoryPanel 
+            history={fullHistory} 
+            onSelectConversation={handleSelectConversation}
+            onClose={() => setShowHistory(false)}
+          />
+        )}
+
+        {showSettings && <SettingsPanel />}
 
         <div className="p-4 h-[calc(100vh-280px)] overflow-y-auto">
           {messages.map((message, index) => (

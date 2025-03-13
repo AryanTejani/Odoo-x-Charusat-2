@@ -10,6 +10,7 @@ import authRoutes from "./routes/auth.route.js";
 import itemRoutes from "./routes/item.route.js"
 import categoryRoutes from "./routes/category.route.js"
 import healthRoutes from "./routes/health.route.js"
+import workoutRoutes from "./routes/workout.route.js";
 
 dotenv.config();
 
@@ -27,6 +28,8 @@ app.use("/api/item",itemRoutes);
 app.use("/api/",categoryRoutes);
 app.use("/api/tracker",foodRoute);
 app.use("/api/health", healthRoutes);
+app.use("/api/workout", workoutRoutes);
+
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));

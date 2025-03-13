@@ -12,4 +12,12 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      // Add any necessary aliases here
+    },
+  },
+  optimizeDeps: {
+    include: ['dayjs', '@mui/material', '@mui/x-date-pickers'],
+  },
 });

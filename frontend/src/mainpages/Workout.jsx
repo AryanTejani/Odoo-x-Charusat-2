@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Exercises from '../section/Exercises';
-import SerachExercies from './SerachExercies';
+import Exercises from '../workout/Exercises';
+import SerachExercies from '../workout/SerachExercies';
 
 const Workout = () => {
 
